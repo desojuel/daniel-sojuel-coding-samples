@@ -1,0 +1,74 @@
+df_dyd <- read_xlsx(here("Datos","Encuesta docente","encuesta docente 20.11.25 con versiones.xlsx"))
+
+# limpiar por fecha
+df_dyd <- df_dyd[df_dyd$start >= as.POSIXct("2025-08-25 00:00:00"), ]
+
+df_dyd <- clean_names(df_dyd)
+
+
+# unir variables duplicadas por las versiones
+
+df_dyd <- df_dyd %>% 
+  mutate(x87_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_ciencias_naturales_125 = coalesce(
+    x87_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_ciencias_naturales_125, 
+    x87_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_ciencias_naturales_407),
+    x104_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_ciencias_sociales_formacion_ciudadana_e_interculturalidad_142 = coalesce(
+      x104_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_ciencias_sociales_formacion_ciudadana_e_interculturalidad_142, 
+      x104_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_ciencias_sociales_formacion_ciudadana_e_interculturalidad_408), 
+    x121_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_comunicacion_y_lenguaje_idioma_espanol_159 = coalesce(
+      x121_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_comunicacion_y_lenguaje_idioma_espanol_159, 
+      x121_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_comunicacion_y_lenguaje_idioma_espanol_409), 
+    x138_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_comunicacion_y_lenguaje_idioma_extranjero_ingles_176 = coalesce(
+      x138_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_comunicacion_y_lenguaje_idioma_extranjero_ingles_176, 
+      x138_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_comunicacion_y_lenguaje_idioma_extranjero_ingles_410),
+    x155_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_culturas_e_idiomas_mayas_garifuna_o_xinka_193 = coalesce(
+      x155_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_culturas_e_idiomas_mayas_garifuna_o_xinka_193, 
+      x155_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_culturas_e_idiomas_mayas_garifuna_o_xinka_411), 
+    x172_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_teatro_210 = coalesce(
+      x172_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_teatro_210, 
+      x172_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_teatro_412), 
+    x189_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_danza_227 = coalesce(
+      x189_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_danza_227, 
+      x189_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_danza_413), 
+    x206_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_educacion_musical_244 = coalesce(
+      x206_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_educacion_musical_244, 
+      x206_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_educacion_musical_414), 
+    x223_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_artes_visuales_261 = coalesce(
+      x223_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_artes_visuales_261, 
+      x223_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_artes_visuales_415), 
+    x240_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_educacion_fisica_278 = coalesce(
+      x240_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_educacion_fisica_278, 
+      x240_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_educacion_fisica_416), 
+    x258_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_emprendimiento_para_la_productividad_295 = coalesce(
+      x258_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_emprendimiento_para_la_productividad_295, 
+      x258_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_emprendimiento_para_la_productividad_417), 
+    x275_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_matematicas_312 = coalesce(
+      x275_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_matematicas_312, 
+      x275_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_matematicas_418), 
+    x292_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_tecnologias_del_aprendizaje_y_la_comunicacion_tac_329 = coalesce(
+      x292_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_tecnologias_del_aprendizaje_y_la_comunicacion_tac_329, 
+      x292_durante_el_presente_ano_o_en_anos_anteriores_ha_recibido_los_siguientes_materiales_de_apoyo_para_impartir_tecnologias_del_aprendizaje_y_la_comunicacion_tac_419))
+
+# seleccionar las variables oficiales de df_dyd
+
+rango_vars <- c(match("start",colnames(df_dyd)):match("x334_que_otras_dificultades_de_implementacion_del_cnb_identifica_en_el_centro_educativo",colnames(df_dyd)),
+                match("id",colnames(df_dyd)):match("index",colnames(df_dyd)))
+
+df_dyd <- df_dyd |> 
+  select(all_of(rango_vars))
+
+
+# leer archivo colnames con nombres de variables oficiales y asignarlos
+
+cols_df_dyd <- read_xlsx(
+  here("datasets para procesamiento", "colnames evaluacion curricular basico.xlsx"),
+  col_names = T
+)[[4]] |> 
+  na.omit() |> 
+  as.vector()
+
+colnames(df_dyd) <- cols_df_dyd
+
+# exportar df_dyd para la siguiente fase de limpieza
+
+write_xlsx(df_dyd, here("Datos","Encuesta docente","df_dyd.xlsx"))
